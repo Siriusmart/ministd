@@ -1,4 +1,4 @@
-Rewriting Rust's standard library for fun.
+Rewriting Rust's standard library for fun (no_std).
 
 ## Structs
 

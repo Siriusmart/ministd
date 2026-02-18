@@ -2,7 +2,8 @@
 name = "ministd"
 version = "0.1.0"
 edition = "2024"
+description = "Rewriting Rust's standard library for fun (no_std)"
+repository = "https://github.com/Siriusmart/ministd"
+license = "AGPL-3.0-only"
 
 [dependencies]
-
-[features]
