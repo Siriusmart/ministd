@@ -1,6 +1,5 @@
 use core::{
     fmt::Debug,
-    mem::transmute,
     ops::{Deref, DerefMut, Index, IndexMut},
     ptr::{self, null_mut},
     slice::{self, SliceIndex},
@@ -32,7 +31,7 @@ impl<T> Vec<T> {
 
         match self.length {
             0 => {
-                self.first = unsafe { transmute(malloc(size_of::<T>())) };
+                self.first = malloc(1);
 
                 assert!(
                     self.first != null_mut(),
@@ -43,8 +42,7 @@ impl<T> Vec<T> {
             }
             len if len == self.capacity => {
                 self.capacity <<= 1;
-                let new_first: *mut T =
-                    unsafe { transmute(malloc(size_of::<T>() * self.capacity)) };
+                let new_first: *mut T = malloc(self.capacity);
 
                 assert!(
                     self.first != null_mut(),
@@ -55,7 +53,7 @@ impl<T> Vec<T> {
                     unsafe { ptr::copy_nonoverlapping(self.first.add(i), new_first.add(i), 1) }
                 }
 
-                unsafe { free(transmute(self.first)) };
+                free(self.first);
                 self.first = new_first;
             }
             _ => {}
@@ -175,5 +173,11 @@ impl<T: Ord> Vec<T> {
 impl<T: Debug> Debug for Vec<T> {
     fn fmt(&self, f: &mut core::fmt::Formatter<'_>) -> core::fmt::Result {
         (&**self).fmt(f)
+    }
+}
+
+impl<T> Drop for Vec<T> {
+    fn drop(&mut self) {
+        free(self.first);
     }
 }

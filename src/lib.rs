@@ -1,6 +1,7 @@
 #![no_std]
-mod alloc;
+pub mod alloc;
 pub mod collections;
+pub mod rc;
 
 #[cfg(test)]
 mod tests;

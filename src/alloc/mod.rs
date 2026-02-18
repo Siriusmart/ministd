@@ -1,2 +1,3 @@
 mod c_malloc;
-pub use c_malloc::*;
+mod typed_malloc;
+pub use typed_malloc::*;
